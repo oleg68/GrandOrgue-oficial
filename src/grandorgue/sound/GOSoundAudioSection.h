@@ -14,6 +14,7 @@
 #include "GOInt.h"
 #include "GOSoundCompress.h"
 #include "GOSoundDefs.h"
+#include "GOSoundPcmSegment.h"
 #include "GOSoundResample.h"
 #include "GOWave.h"
 
@@ -51,7 +52,8 @@ typedef struct audio_end_data_segment_s {
   unsigned char *end_ptr;
   unsigned read_end;
   unsigned end_pos;
-  unsigned end_size;
+  unsigned end_length; // length of the segment in samples
+  unsigned end_size;   // size in bytes
   unsigned end_loop_length;
 
   /* Index of the next section segment to be played (-1 indicates the
@@ -82,6 +84,11 @@ typedef struct audio_section_stream_s {
   unsigned transition_position;
   unsigned read_end;
   unsigned end_pos;
+
+  /* References to the current start and the end audio segment
+   */
+  GOSoundPcmSegment startSegment;
+  GOSoundPcmSegment endSegment;
 
   unsigned position_index;
   unsigned position_fraction;
@@ -159,6 +166,9 @@ private:
   unsigned m_BytesPerSample;
   unsigned m_Channels;
 
+  // references to the main pcm segment. Used only for uncompressed
+  GOSoundPcmSegment m_PcmSegment;
+
   /* Size of the section in BYTES */
   GOMemoryPool &m_Pool;
   unsigned m_AllocSize;
@@ -208,20 +218,6 @@ public:
 
   bool IsOneshot() const;
 
-  static int GetSampleData(
-    unsigned position,
-    unsigned channel,
-    unsigned bits_per_sample,
-    unsigned channels,
-    const unsigned char *data);
-  static void SetSampleData(
-    unsigned position,
-    unsigned channel,
-    unsigned bits_per_sample,
-    unsigned channels,
-    unsigned value,
-    unsigned char *data);
-
   int GetSample(
     unsigned position,
     unsigned channel,
@@ -249,33 +245,10 @@ inline bool GOAudioSection::IsOneshot() const {
     && (m_EndSegments[0].next_start_segment_index < 0);
 }
 
-inline int GOAudioSection::GetSampleData(
-  unsigned position,
-  unsigned channel,
-  unsigned bits_per_sample,
-  unsigned channels,
-  const unsigned char *sample_data) {
-  if (bits_per_sample <= 8) {
-    GOInt8 *data = (GOInt8 *)sample_data;
-    return data[position * channels + channel];
-  }
-  if (bits_per_sample <= 16) {
-    GOInt16 *data = (GOInt16 *)sample_data;
-    return data[position * channels + channel];
-  }
-  if (bits_per_sample <= 24) {
-    GOInt24 *data = (GOInt24 *)sample_data;
-    return data[position * channels + channel];
-  }
-  assert(0 && "broken sampler type");
-  return 0;
-}
-
 inline int GOAudioSection::GetSample(
   unsigned position, unsigned channel, DecompressionCache *cache) const {
   if (!m_Compressed) {
-    return GetSampleData(
-      position, channel, m_BitsPerSample, m_Channels, m_Data);
+    return m_PcmSegment.GetSampleData(position, channel);
   } else {
     DecompressionCache tmp;
     if (!cache) {
@@ -287,31 +260,6 @@ inline int GOAudioSection::GetSample(
     DecompressTo(*cache, position, m_Data, m_Channels, (m_BitsPerSample >= 20));
     return cache->value[channel];
   }
-}
-
-inline void GOAudioSection::SetSampleData(
-  unsigned position,
-  unsigned channel,
-  unsigned bits_per_sample,
-  unsigned channels,
-  unsigned value,
-  unsigned char *sample_data) {
-  if (bits_per_sample <= 8) {
-    GOInt8 *data = (GOInt8 *)sample_data;
-    data[position * channels + channel] = value;
-    return;
-  }
-  if (bits_per_sample <= 16) {
-    GOInt16 *data = (GOInt16 *)sample_data;
-    data[position * channels + channel] = value;
-    return;
-  }
-  if (bits_per_sample <= 24) {
-    GOInt24 *data = (GOInt24 *)sample_data;
-    data[position * channels + channel] = value;
-    return;
-  }
-  assert(0 && "broken sampler type");
 }
 
 inline float GOAudioSection::GetNormGain() const {
