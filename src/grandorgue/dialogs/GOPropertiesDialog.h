@@ -8,18 +8,21 @@
 #ifndef GOPROPERTIESDIALOG_H
 #define GOPROPERTIESDIALOG_H
 
-#include <wx/dialog.h>
 #include <wx/stattext.h>
 #include <wx/string.h>
 
+#include "common/GOSimpleDialog.h"
+
+class GOConfig;
 class GOOrganController;
 
-class GOPropertiesDialog : public wxDialog {
+class GOPropertiesDialog : public GOSimpleDialog {
 private:
   GOOrganController *m_OrganController;
 
 public:
-  GOPropertiesDialog(GOOrganController *organController, wxWindow *parent);
+  GOPropertiesDialog(
+    GOOrganController *organController, wxWindow *parent, GOConfig &config);
 };
 
 #endif // GOPROPERTIESDIALOG_H

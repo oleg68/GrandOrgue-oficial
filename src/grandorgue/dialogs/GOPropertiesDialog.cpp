@@ -66,11 +66,15 @@ bool GOPropertiesTest(const wxString &what) {
 }
 
 GOPropertiesDialog::GOPropertiesDialog(
-  GOOrganController *organController, wxWindow *win)
-  : wxDialog(win, wxID_ANY, (wxString)_("Organ Properties")),
-    m_OrganController(organController) {
+  GOOrganController *organController, wxWindow *win, GOConfig &config)
+  : GOSimpleDialog(
+    win,
+    wxT("OrganProperties"),
+    _("Organ Properties"),
+    config.m_DialogSizes,
+    wxEmptyString,
+    wxDIALOG_NO_PARENT) {
   wxASSERT(organController);
-  wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
   sizer->Add(GOPropertiesText(this, 0, _("Title")), 0);
@@ -127,9 +131,6 @@ GOPropertiesDialog::GOPropertiesDialog(
       0,
       wxTOP | wxALIGN_CENTER_HORIZONTAL,
       5);
-  topSizer->Add(sizer, 0, wxALL, 10);
-  topSizer->Add(new wxStaticLine(this), 0, wxEXPAND | wxLEFT | wxRIGHT, 5);
-  topSizer->Add(CreateButtonSizer(wxOK), 0, wxALL | wxEXPAND, 10);
 
   sizer->Add(
     GOPropertiesText(this, 0, _("Allocated sample memory")), 0, wxTOP, 5);
@@ -178,6 +179,5 @@ GOPropertiesDialog::GOPropertiesDialog(
     wxLEFT,
     10);
 
-  SetSizer(topSizer);
-  topSizer->Fit(this);
+  LayoutWithInnerSizer(sizer);
 }

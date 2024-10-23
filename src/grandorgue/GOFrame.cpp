@@ -1117,7 +1117,7 @@ void GOFrame::OnProperties(wxCommandEvent &event) {
   GOOrganController *organController = GetOrganController();
 
   if (organController) {
-    GOPropertiesDialog dlg(organController, this);
+    GOPropertiesDialog dlg(organController, this, m_config);
     dlg.ShowModal();
   }
 }
