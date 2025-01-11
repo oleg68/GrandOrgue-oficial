@@ -23,7 +23,6 @@ class GOOrganController;
 
 class GOLabelControl : public GOControl,
                        private GOSaveableObject,
-                       private GOSoundStateHandler,
                        public GOMidiObject {
 protected:
   wxString m_Name;
@@ -40,6 +39,7 @@ protected:
 
 public:
   GOLabelControl(GOOrganController *organController);
+  ~GOLabelControl();
   void Init(GOConfigReader &cfg, wxString group, wxString name);
   void Load(GOConfigReader &cfg, wxString group, wxString name);
   const wxString &GetName() const { return m_Name; }

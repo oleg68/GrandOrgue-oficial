@@ -27,9 +27,10 @@ GOLabelControl::GOLabelControl(GOOrganController *organController)
     nullptr,
     nullptr),
     m_OrganController(organController),
-    m_sender(*organController, MIDI_SEND_LABEL) {
-  m_OrganController->RegisterMidiConfigurator(this);
-  m_OrganController->RegisterSoundStateHandler(this);
+    m_sender(*organController, MIDI_SEND_LABEL) {}
+
+GOLabelControl::~GOLabelControl() {
+  m_OrganController->UnregisterSaveableObject(this);
 }
 
 void GOLabelControl::Init(GOConfigReader &cfg, wxString group, wxString name) {

@@ -29,7 +29,6 @@ class GOOrganModel;
 class GOEnclosure : public GOControl,
                     private GOEventHandler,
                     private GOSaveableObject,
-                    private GOSoundStateHandler,
                     public GOMidiObject {
 private:
   GOOrganModel &r_OrganModel;
@@ -56,6 +55,7 @@ private:
 
 public:
   GOEnclosure(GOOrganModel &organModel);
+  ~GOEnclosure();
   void Init(
     GOConfigReader &cfg, wxString group, wxString Name, unsigned def_value);
   void Load(GOConfigReader &cfg, wxString group, int enclosure_nb);
