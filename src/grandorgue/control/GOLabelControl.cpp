@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2023 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -18,7 +18,7 @@ GOLabelControl::GOLabelControl(GOOrganController *organController)
     m_Name(),
     m_Content(),
     m_OrganController(organController),
-    m_sender(*organController, MIDI_SEND_LABEL) {
+    m_sender(*organController, MIDI_SEND_LABEL, this) {
   m_OrganController->RegisterMidiConfigurator(this);
   m_OrganController->RegisterSoundStateHandler(this);
 }
@@ -47,7 +47,7 @@ const wxString &GOLabelControl::GetContent() { return m_Content; }
 
 void GOLabelControl::SetContent(wxString name) {
   m_Content = name;
-  m_sender.SetLabel(m_Content);
+  SendMidiLabel();
   m_OrganController->SendControlChanged(this);
 }
 
@@ -57,8 +57,6 @@ void GOLabelControl::AbortPlayback() {
 }
 
 void GOLabelControl::PreparePlayback() { m_sender.SetName(m_Name); }
-
-void GOLabelControl::PrepareRecording() { m_sender.SetLabel(m_Content); }
 
 const wxString WX_MIDI_TYPE_CODE = wxT("Label");
 const wxString WX_MIDI_TYPE = _("Label");

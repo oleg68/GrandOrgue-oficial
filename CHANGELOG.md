@@ -1,3 +1,4 @@
+- Added sending MIDI events from labels on changing their MIDI sendings https://github.com/GrandOrgue/grandorgue/issues/2062
 - Increased the maximum number of user-defined temperaments to 999 https://github.com/GrandOrgue/grandorgue/issues/1982
 # 3.15.4 (2024-12-20)
 - Eliminated a MacOs debug alert when opening a settings dialog https://github.com/GrandOrgue/grandorgue/issues/2003

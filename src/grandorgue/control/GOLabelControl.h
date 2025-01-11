@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -24,7 +24,8 @@ class GOOrganController;
 class GOLabelControl : public GOControl,
                        private GOSaveableObject,
                        private GOSoundStateHandler,
-                       public GOMidiConfigurator {
+                       public GOMidiConfigurator,
+                       private GOMidiSender::ChangeListener {
 protected:
   wxString m_Name;
   wxString m_Content;
@@ -32,11 +33,19 @@ protected:
   GOOrganController *m_OrganController;
   GOMidiSender m_sender;
 
+private:
+  void SendMidiLabel() { m_sender.SetLabel(m_Content); }
+  void OnMidiEventListChanged(
+    const GOMidiSenderEventPatternList &newList) override {
+    SendMidiLabel();
+  }
+
+protected:
   void Save(GOConfigWriter &cfg) override;
 
   void AbortPlayback() override;
   void PreparePlayback() override;
-  void PrepareRecording() override;
+  void PrepareRecording() override { SendMidiLabel(); }
 
 public:
   GOLabelControl(GOOrganController *organController);
