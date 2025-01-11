@@ -54,12 +54,6 @@ private:
   void PreparePlayback() override;
   void PrepareRecording() override;
 
-  GOMidiReceiverBase *GetMidiReceiver() override { return &m_midi; }
-  GOMidiSender *GetMidiSender() override { return &m_sender; }
-  GOMidiShortcutReceiver *GetMidiShortcutReceiver() override {
-    return &m_shortcut;
-  }
-
 public:
   GOEnclosure(GOOrganModel &organModel);
   void Init(
@@ -74,10 +68,6 @@ public:
   void Scroll(bool scroll_up);
   bool IsDisplayed(bool new_format);
   void SetElementID(int id);
-
-  const wxString &GetMidiTypeCode() const override;
-  const wxString &GetMidiType() const override;
-  const wxString &GetMidiName() const override { return GetName(); }
 
   wxString GetElementStatus() override;
   std::vector<wxString> GetElementActions() override;

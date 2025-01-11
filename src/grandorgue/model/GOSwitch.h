@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -22,7 +22,7 @@ protected:
   void OnDrawstopStateChanged(bool) override {}
 
 public:
-  GOSwitch(GOOrganModel &organModel) : GODrawstop(organModel) {}
+  GOSwitch(GOOrganModel &organModel);
 
   // Return -1 for all kinds of global switches
   int GetAssociatedManualN() const { return std::max(m_AssociatedManualN, -1); }
@@ -31,9 +31,6 @@ public:
   // Set m_AssociatedManualN.
   // Check that the switch is referenced not more than once
   void AssociateWithManual(int manualN, unsigned indexInManual);
-
-  const wxString &GetMidiTypeCode() const override;
-  const wxString &GetMidiType() const override;
 };
 
 #endif

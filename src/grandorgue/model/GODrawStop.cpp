@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -25,8 +25,12 @@ const struct IniFileEnumEntry GODrawstop::m_function_types[] = {
   {wxT("Xor"), FUNCTION_XOR},
 };
 
-GODrawstop::GODrawstop(GOOrganModel &organModel)
-  : GOButtonControl(organModel, MIDI_RECV_DRAWSTOP, false),
+GODrawstop::GODrawstop(
+  GOOrganModel &organModel,
+  const wxString &midiTypeCode,
+  const wxString &midiTypeName)
+  : GOButtonControl(
+    organModel, midiTypeCode, midiTypeName, MIDI_RECV_DRAWSTOP, false),
     m_Type(FUNCTION_INPUT),
     m_GCState(0),
     m_ControlledDrawstops(),

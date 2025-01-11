@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -19,8 +19,12 @@
 #include "model/GOSwitch.h"
 #include "model/GOTremulant.h"
 
+static const wxString WX_MIDI_TYPE_CODE = wxT("Piston");
+static const wxString WX_MIDI_TYPE_NAME = _("Piston");
+
 GOPistonControl::GOPistonControl(GOOrganModel &organModel)
-  : GOPushbuttonControl(organModel), drawstop(NULL) {
+  : GOPushbuttonControl(organModel, WX_MIDI_TYPE_CODE, WX_MIDI_TYPE_NAME),
+    drawstop(nullptr) {
   organModel.RegisterControlChangedHandler(this);
 }
 
@@ -94,12 +98,3 @@ void GOPistonControl::ControlChanged(GOControl *control) {
 }
 
 void GOPistonControl::Push() { this->drawstop->Push(); }
-
-const wxString WX_MIDI_TYPE_CODE = wxT("Piston");
-const wxString WX_MIDI_TYPE = _("Piston");
-
-const wxString &GOPistonControl::GetMidiTypeCode() const {
-  return WX_MIDI_TYPE_CODE;
-}
-
-const wxString &GOPistonControl::GetMidiType() const { return WX_MIDI_TYPE; }
