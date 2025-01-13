@@ -28,11 +28,9 @@ class GOOrganModel;
 
 class GOEnclosure : public GOControl,
                     private GOEventHandler,
-                    private GOSaveableObject,
                     public GOMidiObject {
 private:
   GOOrganModel &r_OrganModel;
-  GOMidiMap &r_MidiMap;
 
   GOMidiReceiver m_midi;
   GOMidiSender m_sender;
@@ -40,9 +38,13 @@ private:
   int m_AmpMinimumLevel;
   int m_MIDIInputNumber;
   int m_MIDIValue;
-  wxString m_Name;
   bool m_Displayed1;
   bool m_Displayed2;
+
+  void LoadMidiObject(
+    GOConfigReader &cfg, const wxString &group, GOMidiMap &midiMap) override;
+  void SaveMidiObject(
+    GOConfigWriter &cfg, const wxString &group, GOMidiMap &midiMap) override;
 
   void ProcessMidi(const GOMidiEvent &event) override;
   void HandleKey(int key) override;
@@ -56,11 +58,16 @@ private:
 public:
   GOEnclosure(GOOrganModel &organModel);
   ~GOEnclosure();
+
+  using GOMidiObject::Init; // for avoiding a warning
   void Init(
-    GOConfigReader &cfg, wxString group, wxString Name, unsigned def_value);
-  void Load(GOConfigReader &cfg, wxString group, int enclosure_nb);
+    GOConfigReader &cfg,
+    const wxString &group,
+    const wxString &name,
+    unsigned defValue);
+  using GOMidiObject::Load; // for avoiding a warning
+  void Load(GOConfigReader &cfg, const wxString &group, int enclosureNb);
   void Set(int n);
-  const wxString &GetName() const { return m_Name; }
   int GetValue();
   int GetMIDIInputNumber();
   float GetAttenuation();

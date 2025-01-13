@@ -21,7 +21,6 @@ GOLabelControl::GOLabelControl(GOOrganController *organController)
     *organController,
     WX_MIDI_TYPE_CODE,
     WX_MIDI_TYPE_NAME,
-    m_Name,
     &m_sender,
     nullptr,
     nullptr,
@@ -29,26 +28,16 @@ GOLabelControl::GOLabelControl(GOOrganController *organController)
     m_OrganController(organController),
     m_sender(*organController, MIDI_SEND_LABEL) {}
 
-GOLabelControl::~GOLabelControl() {
-  m_OrganController->UnregisterSaveableObject(this);
+void GOLabelControl::LoadMidiObject(
+  GOConfigReader &cfg, const wxString &group, GOMidiMap &midiMap) {
+  GOMidiObject::LoadMidiObject(cfg, group, midiMap);
+  m_sender.Load(cfg, group, midiMap);
 }
 
-void GOLabelControl::Init(GOConfigReader &cfg, wxString group, wxString name) {
-  m_OrganController->RegisterSaveableObject(this);
-  m_group = group;
-  m_Name = name;
-  m_sender.Load(cfg, m_group, m_OrganController->GetSettings().GetMidiMap());
-}
-
-void GOLabelControl::Load(GOConfigReader &cfg, wxString group, wxString name) {
-  m_OrganController->RegisterSaveableObject(this);
-  m_group = group;
-  m_Name = name;
-  m_sender.Load(cfg, m_group, m_OrganController->GetSettings().GetMidiMap());
-}
-
-void GOLabelControl::Save(GOConfigWriter &cfg) {
-  m_sender.Save(cfg, m_group, m_OrganController->GetSettings().GetMidiMap());
+void GOLabelControl::SaveMidiObject(
+  GOConfigWriter &cfg, const wxString &group, GOMidiMap &midiMap) {
+  GOMidiObject::SaveMidiObject(cfg, group, midiMap);
+  m_sender.Save(cfg, group, midiMap);
 }
 
 const wxString &GOLabelControl::GetContent() { return m_Content; }
@@ -64,7 +53,7 @@ void GOLabelControl::AbortPlayback() {
   m_sender.SetName(wxEmptyString);
 }
 
-void GOLabelControl::PreparePlayback() { m_sender.SetName(m_Name); }
+void GOLabelControl::PreparePlayback() { m_sender.SetName(GetName()); }
 
 void GOLabelControl::PrepareRecording() { m_sender.SetLabel(m_Content); }
 

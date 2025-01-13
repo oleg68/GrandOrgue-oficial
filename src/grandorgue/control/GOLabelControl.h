@@ -21,17 +21,16 @@ class GOConfigReader;
 class GOConfigWriter;
 class GOOrganController;
 
-class GOLabelControl : public GOControl,
-                       private GOSaveableObject,
-                       public GOMidiObject {
+class GOLabelControl : public GOControl, public GOMidiObject {
 protected:
-  wxString m_Name;
   wxString m_Content;
-  wxString m_group;
   GOOrganController *m_OrganController;
   GOMidiSender m_sender;
 
-  void Save(GOConfigWriter &cfg) override;
+  void LoadMidiObject(
+    GOConfigReader &cfg, const wxString &group, GOMidiMap &midiMap) override;
+  void SaveMidiObject(
+    GOConfigWriter &cfg, const wxString &group, GOMidiMap &midiMap) override;
 
   void AbortPlayback() override;
   void PreparePlayback() override;
@@ -39,10 +38,6 @@ protected:
 
 public:
   GOLabelControl(GOOrganController *organController);
-  ~GOLabelControl();
-  void Init(GOConfigReader &cfg, wxString group, wxString name);
-  void Load(GOConfigReader &cfg, wxString group, wxString name);
-  const wxString &GetName() const { return m_Name; }
   const wxString &GetContent();
   void SetContent(wxString name);
 
