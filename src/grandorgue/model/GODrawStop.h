@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -16,7 +16,7 @@
 #include "combinations/model/GOCombinationElement.h"
 #include "control/GOButtonControl.h"
 
-class GODrawstop : public GOButtonControl, virtual public GOCombinationElement {
+class GODrawStop : public GOButtonControl, virtual public GOCombinationElement {
 public:
   enum GOFunctionType {
     FUNCTION_INPUT,
@@ -34,8 +34,8 @@ private:
   int m_GCState;
   std::unordered_map<wxString, bool, wxStringHash, wxStringEqual>
     m_InternalStates;
-  std::vector<GODrawstop *> m_ControlledDrawstops;
-  std::vector<GODrawstop *> m_ControllingDrawstops;
+  std::vector<GODrawStop *> m_ControlledDrawstops;
+  std::vector<GODrawStop *> m_ControllingDrawstops;
 
   bool IsControlledByUser() const override { return !IsReadOnly(); }
 
@@ -68,7 +68,7 @@ protected:
   void StartPlayback() override;
 
 public:
-  GODrawstop(GOOrganModel &organModel);
+  GODrawStop(GOOrganModel &organModel);
 
   /* + For tests only */
   GOFunctionType GetFunctionType() const { return m_Type; }
@@ -76,7 +76,7 @@ public:
 
   void ClearControllingDrawstops();
   void AddControllingDrawstop(
-    GODrawstop *pDrawStop, unsigned switchN, const wxString &group);
+    GODrawStop *pDrawStop, unsigned switchN, const wxString &group);
   /* - For tests only */
 
   bool IsToStoreInDivisional() const { return m_IsToStoreInDivisional; }
@@ -85,8 +85,8 @@ public:
 
   void Init(GOConfigReader &cfg, const wxString &group, const wxString &name);
   void Load(GOConfigReader &cfg, const wxString &group);
-  void RegisterControlled(GODrawstop *sw);
-  void UnRegisterControlled(GODrawstop *sw);
+  void RegisterControlled(GODrawStop *sw);
+  void UnRegisterControlled(GODrawStop *sw);
   virtual void SetButtonState(bool on) override;
   virtual void Update();
   void Reset();

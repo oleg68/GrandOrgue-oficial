@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -15,7 +15,7 @@
 #include "GOOrganModel.h"
 #include "GOSwitch.h"
 
-const struct IniFileEnumEntry GODrawstop::m_function_types[] = {
+const struct IniFileEnumEntry GODrawStop::m_function_types[] = {
   {wxT("Input"), FUNCTION_INPUT},
   {wxT("And"), FUNCTION_AND},
   {wxT("Or"), FUNCTION_OR},
@@ -25,7 +25,7 @@ const struct IniFileEnumEntry GODrawstop::m_function_types[] = {
   {wxT("Xor"), FUNCTION_XOR},
 };
 
-GODrawstop::GODrawstop(GOOrganModel &organModel)
+GODrawStop::GODrawStop(GOOrganModel &organModel)
   : GOButtonControl(organModel, MIDI_RECV_DRAWSTOP, false),
     m_Type(FUNCTION_INPUT),
     m_GCState(0),
@@ -34,25 +34,25 @@ GODrawstop::GODrawstop(GOOrganModel &organModel)
     m_IsToStoreInDivisional(false),
     m_IsToStoreInGeneral(false) {}
 
-void GODrawstop::RegisterControlled(GODrawstop *sw) {
+void GODrawStop::RegisterControlled(GODrawStop *sw) {
   m_ControlledDrawstops.push_back(sw);
 }
 
-void GODrawstop::UnRegisterControlled(GODrawstop *sw) {
+void GODrawStop::UnRegisterControlled(GODrawStop *sw) {
   auto end = m_ControlledDrawstops.end();
   auto pos = std::find(m_ControlledDrawstops.begin(), end, sw);
 
   m_ControlledDrawstops.erase(pos);
 }
 
-void GODrawstop::ClearControllingDrawstops() {
+void GODrawStop::ClearControllingDrawstops() {
   for (auto pControlling : m_ControllingDrawstops)
     pControlling->UnRegisterControlled(this);
   m_ControllingDrawstops.clear();
 }
 
-void GODrawstop::AddControllingDrawstop(
-  GODrawstop *pDrawStop, unsigned switchN, const wxString &group) {
+void GODrawStop::AddControllingDrawstop(
+  GODrawStop *pDrawStop, unsigned switchN, const wxString &group) {
   auto end = m_ControllingDrawstops.end();
 
   if (m_Type == FUNCTION_INPUT)
@@ -66,7 +66,7 @@ void GODrawstop::AddControllingDrawstop(
   m_ControllingDrawstops.push_back(pDrawStop);
 }
 
-void GODrawstop::SetFunctionType(GOFunctionType newFunctionType) {
+void GODrawStop::SetFunctionType(GOFunctionType newFunctionType) {
   if (newFunctionType != m_Type) {
     if (m_Type == FUNCTION_INPUT)
       ClearControllingDrawstops();
@@ -77,7 +77,7 @@ void GODrawstop::SetFunctionType(GOFunctionType newFunctionType) {
   }
 }
 
-void GODrawstop::Init(
+void GODrawStop::Init(
   GOConfigReader &cfg, const wxString &group, const wxString &name) {
   m_Type = FUNCTION_INPUT;
   m_Engaged = cfg.ReadBoolean(CMBSetting, group, wxT("DefaultToEngaged"));
@@ -87,7 +87,7 @@ void GODrawstop::Init(
   GOButtonControl::Init(cfg, group, name);
 }
 
-void GODrawstop::SetupIsToStoreInCmb() {
+void GODrawStop::SetupIsToStoreInCmb() {
   const bool isControlledByUser = !IsReadOnly();
 
   m_IsToStoreInDivisional
@@ -97,7 +97,7 @@ void GODrawstop::SetupIsToStoreInCmb() {
     || isControlledByUser;
 }
 
-void GODrawstop::Load(GOConfigReader &cfg, const wxString &group) {
+void GODrawStop::Load(GOConfigReader &cfg, const wxString &group) {
   m_Type = (GOFunctionType)cfg.ReadEnum(
     ODFSetting,
     group,
@@ -157,13 +157,13 @@ void GODrawstop::Load(GOConfigReader &cfg, const wxString &group) {
     ODFSetting, group, wxT("StoreInGeneral"), false, m_IsToStoreInGeneral);
 }
 
-void GODrawstop::Save(GOConfigWriter &cfg) {
+void GODrawStop::Save(GOConfigWriter &cfg) {
   if (!IsReadOnly())
     cfg.WriteBoolean(m_group, wxT("DefaultToEngaged"), IsEngaged());
   GOButtonControl::Save(cfg);
 }
 
-void GODrawstop::SetResultState(bool resState) {
+void GODrawStop::SetResultState(bool resState) {
   if (IsEngaged() != resState) {
     Display(resState);
     // must be before calling m_ControlledDrawstops[i]->Update();
@@ -173,7 +173,7 @@ void GODrawstop::SetResultState(bool resState) {
   }
 }
 
-void GODrawstop::Reset() {
+void GODrawStop::Reset() {
   if (!IsReadOnly() && m_GCState >= 0) {
     if (m_GCState == 0) {
       // Clear all internal states
@@ -185,7 +185,7 @@ void GODrawstop::Reset() {
   }
 }
 
-bool GODrawstop::CalculateResultState(bool includeDefault) const {
+bool GODrawStop::CalculateResultState(bool includeDefault) const {
   bool resState = false;
 
   for (const auto &intState : m_InternalStates)
@@ -194,7 +194,7 @@ bool GODrawstop::CalculateResultState(bool includeDefault) const {
   return resState;
 }
 
-void GODrawstop::SetInternalState(bool on, const wxString &stateName) {
+void GODrawStop::SetInternalState(bool on, const wxString &stateName) {
   bool &internalState = m_InternalStates[stateName];
 
   if (internalState != on) {
@@ -203,23 +203,23 @@ void GODrawstop::SetInternalState(bool on, const wxString &stateName) {
   }
 }
 
-void GODrawstop::SetButtonState(bool on) {
+void GODrawStop::SetButtonState(bool on) {
   // we prohibit changing the button state while it is engaged by a crescendo
   if (!IsReadOnly() && !CalculateResultState(false))
     SetDrawStopState(on);
 }
 
-void GODrawstop::SetCombinationState(bool on, const wxString &stateName) {
+void GODrawStop::SetCombinationState(bool on, const wxString &stateName) {
   if (!IsReadOnly())
     SetInternalState(on, stateName);
 }
 
-void GODrawstop::StartPlayback() {
+void GODrawStop::StartPlayback() {
   GOButtonControl::StartPlayback();
   Update();
 }
 
-void GODrawstop::Update() {
+void GODrawStop::Update() {
   bool state;
   switch (m_Type) {
   case FUNCTION_INPUT:

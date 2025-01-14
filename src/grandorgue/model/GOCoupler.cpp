@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -17,7 +17,7 @@
 
 GOCoupler::GOCoupler(
   GOOrganModel &organModel, unsigned sourceManual, bool isVirtual)
-  : GODrawstop(organModel),
+  : GODrawStop(organModel),
     m_IsVirtual(isVirtual),
     m_UnisonOff(false),
     m_CoupleToSubsequentUnisonIntermanualCouplers(false),
@@ -41,7 +41,7 @@ GOCoupler::GOCoupler(
     m_NumberOfKeys(127) {}
 
 void GOCoupler::PreparePlayback() {
-  GODrawstop::PreparePlayback();
+  GODrawStop::PreparePlayback();
 
   GOManual *src = r_OrganModel.GetManual(m_SourceManual);
 
@@ -95,7 +95,7 @@ void GOCoupler::Init(
   m_DestinationManual = dest_manual;
   m_DestinationKeyshift = keyshift;
   SetRecursive(recursive);
-  GODrawstop::Init(cfg, group, name);
+  GODrawStop::Init(cfg, group, name);
 
   m_CouplerType = coupler_type;
   m_FirstMidiNote = 0;
@@ -240,7 +240,7 @@ void GOCoupler::Load(GOConfigReader &cfg, const wxString &group) {
     m_NumberOfKeys = cfg.ReadInteger(
       ODFSetting, group, wxT("NumberOfKeys"), 0, 127, false, 127);
   }
-  GODrawstop::Load(cfg, group);
+  GODrawStop::Load(cfg, group);
 
   if (!m_UnisonOff)
     m_CouplerIndexInDest
@@ -248,7 +248,7 @@ void GOCoupler::Load(GOConfigReader &cfg, const wxString &group) {
 }
 
 void GOCoupler::SetupIsToStoreInCmb() {
-  GODrawstop::SetupIsToStoreInCmb();
+  GODrawStop::SetupIsToStoreInCmb();
   m_IsToStoreInDivisional = m_IsToStoreInDivisional
     && (IsIntermanual() ? r_OrganModel.DivisionalsStoreIntermanualCouplers()
                         : r_OrganModel.DivisionalsStoreIntramanualCouplers());

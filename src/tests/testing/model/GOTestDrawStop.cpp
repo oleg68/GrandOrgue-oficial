@@ -14,9 +14,9 @@ void GOTestDrawStop::TestFunctions::run() {
   GOSwitch sw13(*controller);
   GOSwitch sw23(*controller);
 
-  sw12.SetFunctionType(GODrawstop::FUNCTION_AND);
-  sw13.SetFunctionType(GODrawstop::FUNCTION_OR);
-  sw23.SetFunctionType(GODrawstop::FUNCTION_XOR);
+  sw12.SetFunctionType(GODrawStop::FUNCTION_AND);
+  sw13.SetFunctionType(GODrawStop::FUNCTION_OR);
+  sw23.SetFunctionType(GODrawStop::FUNCTION_XOR);
   sw12.AddControllingDrawstop(&sw1, 1, "sw1");
   sw12.AddControllingDrawstop(&sw2, 2, "sw1");
   sw13.AddControllingDrawstop(&sw1, 1, "sw2");

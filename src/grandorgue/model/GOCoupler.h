@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -16,7 +16,7 @@ class GOConfigReader;
 class GOConfigWriter;
 struct IniFileEnumEntry;
 
-class GOCoupler : public GODrawstop {
+class GOCoupler : public GODrawStop {
 public:
   typedef enum { COUPLER_NORMAL, COUPLER_BASS, COUPLER_MELODY } GOCouplerType;
 

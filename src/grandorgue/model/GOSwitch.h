@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -10,7 +10,7 @@
 
 #include "GODrawStop.h"
 
-class GOSwitch : public GODrawstop {
+class GOSwitch : public GODrawStop {
   // the number of manual for mainual switches
   // -2 global switches not referenced from manuals
   // -1 global switches referenced from more than one manual
@@ -22,7 +22,7 @@ protected:
   void OnDrawstopStateChanged(bool) override {}
 
 public:
-  GOSwitch(GOOrganModel &organModel) : GODrawstop(organModel) {}
+  GOSwitch(GOOrganModel &organModel) : GODrawStop(organModel) {}
 
   // Return -1 for all kinds of global switches
   int GetAssociatedManualN() const { return std::max(m_AssociatedManualN, -1); }

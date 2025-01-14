@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -15,7 +15,7 @@
 #include "GORank.h"
 
 GOStop::GOStop(GOOrganModel &organModel, unsigned first_midi_note_number)
-  : GODrawstop(organModel),
+  : GODrawStop(organModel),
     m_RankInfo(0),
     m_KeyVelocity(0),
     m_FirstMidiNoteNumber(first_midi_note_number),
@@ -95,7 +95,7 @@ void GOStop::Load(GOConfigReader &cfg, const wxString &group) {
 
   m_KeyVelocity.resize(m_NumberOfAccessiblePipes);
   std::fill(m_KeyVelocity.begin(), m_KeyVelocity.end(), 0);
-  GODrawstop::Load(cfg, group);
+  GODrawStop::Load(cfg, group);
 }
 
 void GOStop::SetRankKey(unsigned key, unsigned velocity) {
@@ -148,14 +148,14 @@ void GOStop::AbortPlayback() {
 }
 
 void GOStop::PreparePlayback() {
-  GODrawstop::PreparePlayback();
+  GODrawStop::PreparePlayback();
 
   m_KeyVelocity.resize(m_NumberOfAccessiblePipes);
   std::fill(m_KeyVelocity.begin(), m_KeyVelocity.end(), 0);
 }
 
 void GOStop::StartPlayback() {
-  GODrawstop::StartPlayback();
+  GODrawStop::StartPlayback();
 
   if (IsAuto() && IsEngaged())
     SetRankKey(0, 0x7f);

@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -20,7 +20,7 @@ const wxString GODivisionalCoupler::WX_MIDI_TYPE_CODE
 const wxString GODivisionalCoupler::WX_MIDI_TYPE_DESC = _("Divisional Coupler");
 
 GODivisionalCoupler::GODivisionalCoupler(GOOrganModel &organModel)
-  : GODrawstop(organModel), m_BiDirectionalCoupling(false), m_manuals(0) {}
+  : GODrawStop(organModel), m_BiDirectionalCoupling(false), m_manuals(0) {}
 
 void GODivisionalCoupler::Load(GOConfigReader &cfg, wxString group) {
   wxString buffer;
@@ -45,7 +45,7 @@ void GODivisionalCoupler::Load(GOConfigReader &cfg, wxString group) {
       r_OrganModel.GetFirstManualIndex(),
       r_OrganModel.GetManualAndPedalCount()));
   }
-  GODrawstop::Load(cfg, group);
+  GODrawStop::Load(cfg, group);
 }
 
 void GODivisionalCoupler::SetupIsToStoreInCmb() {

@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -23,7 +23,7 @@ struct IniFileEnumEntry;
 
 typedef enum { GOSynthTrem, GOWavTrem } GOTremulantType;
 
-class GOTremulant : public GODrawstop, private GOCacheObject {
+class GOTremulant : public GODrawStop, private GOCacheObject {
 private:
   static const struct IniFileEnumEntry m_tremulant_types[];
   GOTremulantType m_TremulantType;
