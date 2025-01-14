@@ -1,6 +1,6 @@
 /*
  * Copyright 2006 Milan Digital Audio LLC
- * Copyright 2009-2024 GrandOrgue contributors (see AUTHORS)
+ * Copyright 2009-2025 GrandOrgue contributors (see AUTHORS)
  * License GPL-2.0 or later
  * (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
  */
@@ -299,12 +299,12 @@ GOSetter::GOSetter(GOOrganController *organController)
     m_framegeneral(0),
     m_general(0),
     m_crescendo(0),
-    m_CurrFileDisplay(organController),
-    m_PosDisplay(organController),
-    m_BankDisplay(organController),
-    m_CrescendoDisplay(organController),
-    m_TransposeDisplay(organController),
-    m_NameDisplay(organController),
+    m_CurrFileDisplay(*organController),
+    m_PosDisplay(*organController),
+    m_BankDisplay(*organController),
+    m_CrescendoDisplay(*organController),
+    m_TransposeDisplay(*organController),
+    m_NameDisplay(*organController),
     m_CrescendoCtrl(*organController) {
   CreateButtons(*m_OrganController);
 
